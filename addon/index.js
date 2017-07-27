@@ -72,7 +72,7 @@ export default DS.Adapter.extend({
   updateData(typeClass, data) {
     let typeData = this.dataForType(typeClass);
 
-    typeData.pushObjects(data);
+    typeData.pushObject(data);
   },
 
   /**
@@ -156,7 +156,10 @@ export default DS.Adapter.extend({
   */
   createRecord(store, typeClass, snapshot) {
     let data = this.mockJSON(store, typeClass, snapshot);
-
+    
+    if (!data.id)
+        data.id = new Date().getTime();
+    
     this.updateData(typeClass, data);
 
     return this.simulateRemoteCall(() => data);
@@ -213,7 +216,7 @@ export default DS.Adapter.extend({
     @param typeClass
     @param snapshot
   */
-  findExistingFixture(typeClass, snapshot) {
+  findExistingItem(typeClass, snapshot) {
     let data = this.dataForType(typeClass);
     let id = snapshot.id;
 
